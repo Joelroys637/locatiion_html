@@ -60,6 +60,12 @@
     <div id="error"></div>
 
     <script>
+        // Preset location (e.g., classroom location)
+        const presetLocation = { latitude: 11.67, longitude: 78.1344 }; // Replace with your desired location
+
+        // Threshold distance in meters
+        const thresholdDistance = 1000; // 1 km
+
         function getLocation() {
             const locationDiv = document.getElementById("location");
             const errorDiv = document.getElementById("error");
@@ -72,7 +78,17 @@
                 navigator.geolocation.getCurrentPosition(
                     (position) => {
                         const { latitude, longitude } = position.coords;
-                        locationDiv.textContent = `Latitude: ${latitude}, Longitude: ${longitude}`;
+
+                        // Calculate distance to preset location
+                        const distance = calculateDistance(latitude, longitude, presetLocation.latitude, presetLocation.longitude);
+
+                        if (distance <= thresholdDistance) {
+                            locationDiv.textContent = `Present! (Distance: ${distance.toFixed(2)} meters)`;
+                            locationDiv.style.color = "green";
+                        } else {
+                            locationDiv.textContent = `Not Present (Distance: ${distance.toFixed(2)} meters)`;
+                            locationDiv.style.color = "red";
+                        }
                     },
                     (error) => {
                         switch (error.code) {
@@ -88,11 +104,34 @@
                             default:
                                 errorDiv.textContent = "An unknown error occurred.";
                         }
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 0,
                     }
                 );
             } else {
                 locationDiv.textContent = "Geolocation is not supported by this browser.";
             }
+        }
+
+        // Haversine formula to calculate the distance between two lat/lon points
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const toRadians = (degrees) => degrees * (Math.PI / 180);
+            const earthRadius = 6371000; // Earth's radius in meters
+
+            const dLat = toRadians(lat2 - lat1);
+            const dLon = toRadians(lon2 - lon1);
+
+            const a =
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+            return earthRadius * c; // Distance in meters
         }
     </script>
 </body>
