@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script async custom-element="amp-ad" src="https://cdn.ampproject.org/v0/amp-ad-0.1.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Location Finder</title>
@@ -55,93 +54,18 @@
     </style>
 </head>
 <body>
-    <amp-ad width="100vw" height="320"
-     type="adsense"
+    <h1>Location Finder</h1>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7596984091672717"
+     crossorigin="anonymous"></script>
+<!-- location -->
+<ins class="adsbygoogle"
+     style="display:block"
      data-ad-client="ca-pub-7596984091672717"
      data-ad-slot="5951353805"
-     data-auto-format="rspv"
-     data-full-width="">
-  <div overflow=""></div>
-</amp-ad>
-    <h1>Location Finder</h1>
-    <button onclick="getLocation()">Find My Location</button>
-    <div id="location">Your location will appear here.</div>
-    <div id="error"></div>
-
-    <script>
-        // Preset location (e.g., classroom location)
-        const presetLocation = { latitude: 11.67, longitude: 78.1344 }; // Replace with your desired location
-
-        // Threshold distance in meters
-        const thresholdDistance = 1000; // 1 km
-
-        function getLocation() {
-            const locationDiv = document.getElementById("location");
-            const errorDiv = document.getElementById("error");
-
-            // Reset the output areas
-            locationDiv.textContent = "Finding your location...";
-            errorDiv.textContent = "";
-
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        const { latitude, longitude } = position.coords;
-
-                        // Calculate distance to preset location
-                        const distance = calculateDistance(latitude, longitude, presetLocation.latitude, presetLocation.longitude);
-
-                        if (distance <= thresholdDistance) {
-                            locationDiv.textContent = `Present! (Distance: ${distance.toFixed(2)} meters)`;
-                            locationDiv.style.color = "green";
-                        } else {
-                            locationDiv.textContent = `Not Present (Distance: ${distance.toFixed(2)} meters)`;
-                            locationDiv.style.color = "red";
-                        }
-                    },
-                    (error) => {
-                        switch (error.code) {
-                            case error.PERMISSION_DENIED:
-                                errorDiv.textContent = "User denied the request for Geolocation.";
-                                break;
-                            case error.POSITION_UNAVAILABLE:
-                                errorDiv.textContent = "Location information is unavailable.";
-                                break;
-                            case error.TIMEOUT:
-                                errorDiv.textContent = "The request to get user location timed out.";
-                                break;
-                            default:
-                                errorDiv.textContent = "An unknown error occurred.";
-                        }
-                    },
-                    {
-                        enableHighAccuracy: true,
-                        timeout: 10000,
-                        maximumAge: 0,
-                    }
-                );
-            } else {
-                locationDiv.textContent = "Geolocation is not supported by this browser.";
-            }
-        }
-
-        // Haversine formula to calculate the distance between two lat/lon points
-        function calculateDistance(lat1, lon1, lat2, lon2) {
-            const toRadians = (degrees) => degrees * (Math.PI / 180);
-            const earthRadius = 6371000; // Earth's radius in meters
-
-            const dLat = toRadians(lat2 - lat1);
-            const dLon = toRadians(lon2 - lon1);
-
-            const a =
-                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) *
-                Math.sin(dLon / 2) * Math.sin(dLon / 2);
-
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-            return earthRadius * c; // Distance in meters
-        }
-    </script>
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
 </body>
 </html>
